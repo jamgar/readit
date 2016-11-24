@@ -10,19 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161120021953) do
+ActiveRecord::Schema.define(version: 20161124154532) do
 
   create_table "stories", force: :cascade do |t|
     t.string   "name"
     t.string   "link"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "user_id"
+    t.integer  "votes_count", default: 0
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "password_digest"
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "votes", force: :cascade do |t|
     t.integer  "story_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
 
 end
