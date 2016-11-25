@@ -2,7 +2,7 @@ class StoriesController < ApplicationController
   before_action :ensure_login, only: [ :new, :create ]
 
   def index
-    @story = Story.order('RANDOM()').first
+    @stories = Story.popular
   end
 
   def new
@@ -23,8 +23,13 @@ class StoriesController < ApplicationController
     @story = Story.find(params[:id])
   end
 
+  def bin
+    @stories = Story.upcoming
+    render action: "index"
+  end
+
   private
     def story_params
-      params.require(:story).permit(:name, :link)
+      params.require(:story).permit(:name, :link, :description)
     end
 end
