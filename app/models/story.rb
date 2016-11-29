@@ -1,4 +1,5 @@
 class Story < ApplicationRecord
+  acts_as_taggable
   belongs_to :user
   validates :name, :link, presence: true
   has_many :votes do

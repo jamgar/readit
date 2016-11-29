@@ -22,7 +22,11 @@
     <%= f.text_area :description %>
   </div>
   <div>
-    <%= submit_tag %>  
+    <p>
+      Tags (comma separated):<br/>
+      <%= f.text_field :tag_list %>
+    </p>
+    <%= submit_tag %>
   </div>
 
 <% end %>

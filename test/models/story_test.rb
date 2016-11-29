@@ -40,4 +40,38 @@ class StoryTest < ActiveSupport::TestCase
   test "is associated with a user" do
     assert_equal users(:glenda), stories(:one).user
   end
+
+  test "increments vote counter cache" do
+    stories(:two).votes.create(user: users(:glenda))
+    stories(:two).reload
+    assert_equal 1, stories(:two).attributes['votes_count']
+  end
+
+  test "decrements votes couter cache" do
+    stories(:one).votes.first.destroy
+    stories(:one).reload
+    assert_equal 1, stories(:one).attributes['votes_count']
+  end
+
+  test "casts votes after creating story" do
+    s = Story.create(
+      name: "Vote SmartThe 2008 Elections",
+      link: "http://votesmart.org",
+      user: users(:glenda)
+    )
+    assert_equal users(:glenda), s.votes.first.user
+  end
+
+  test "is taggable" do
+    stories(:one).tag_list = 'blog, ruby'
+    stories(:one).save
+    assert_equal 2, stories(:one).tags.size
+    assert_equal [ 'blog', 'ruby' ], stories(:one).tag_list
+  end
+
+  test "finds tagged with" do
+    stories(:one).tag_list = 'blog, ruby'
+    stories(:one).save
+    assert_equal [ stories(:one) ], Story.tagged_with('blog')
+  end
 end
